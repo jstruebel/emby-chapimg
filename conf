@@ -1,0 +1,14 @@
+#!/bin/bash -ex
+install()
+{
+    apt-get update
+    DEBIAN_FRONTEND=noninteractive apt-get -y \
+        -o DPkg::Options::=--force-confdef \
+        -o DPkg::Options::=--force-confold \
+        install $@
+}
+
+# add chapter image extraction settings to embysetings
+CONF=/etc/embysetup
+echo 'POST {server}/emby/System/Configuration/chapters json {"EnableMovieChapterImageExtraction":true,"EnableEpisodeChapterImageExtraction":true,"EnableOtherVideoChapterImageExtraction":false,"DownloadMovieChapters":true,"DownloadEpisodeChapters":false,"FetcherOrder":[],"DisabledFetchers":[],"ExtractDuringLibraryScan":true}' >> $CONF
+
